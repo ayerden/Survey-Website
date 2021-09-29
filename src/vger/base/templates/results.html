@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body>
+<h1>Results</h1>
+<p>Here's your survey results</p>
+<p> The survey is {{ survey_name }} V{{ version_number }}</p>
+
+ {% for category in categories %}
+<p>Category: {{category.titleOfCategory}}
+    {% for survey_question in survey_questions %}
+
+        {% if survey_question.category_fk == category %}
+
+        {% for question in questions %}
+
+            {% if survey_question.question_fk == question %}
+
+            {% for answer in answers %}
+                {% if answer.survey_question_fk == survey_question %}
+                    <h3>{{ question.question_text }}</h3>
+                    {% if answer.answer_text == 'f' or answer.answer_text == 't' %}
+                        {% if answer.answer_text == 't'%}
+                            <p>True</p>
+                        {% endif%}
+                        {% if answer.answer_text == 'f'%}
+                            <p>False</p>
+                        {% endif%}
+                    {% else %}
+                    <p>{{ answer.answer_text }}</p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    {% endfor s%}
+{% endfor %}
+
+<p>Average Range Score {{range_average}}</p>
+<p>True Score {{true_score}}</p>
+<p>False Score {{false_score}}</p>
+
+<!--<p>Would you like to take this survey again?</p>
+    <a href="{{ survey.get_absolute_url }}">{{ survey.titleOfSurvey }}</a>
+    <form method="get" action="{{ survey.get_creation_url }}">
+        <button type="submit">Take Survey Again</button>
+    </form>-->
+</body>
+{% endblock content %}

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="/static/base/expand_button.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <h2>Title: {{ survey.titleOfSurvey }}</h2>
+</div>
+
+{% comment %} <a href="{{ survey.get_welcome_url }}">Take Survey</a> {% endcomment %}
+
+<div class="container-fluid">
+  <p><strong>Description:</strong> {{survey.description }}</p>
+  <p><strong>Version:</strong> {{survey.version_number }}</p>
+</div>
+
+{% comment %} {% if perms.canDeleteSurvey %}
+    <a href="{{ survey_detail.get_absolute_url }}/delete">Delete Survey</a>
+{% endif %} {% endcomment %}
+<div class="container-fluid">
+  <h2>Categories</h2>
+</div>
+
+<div class="container-fluid">
+  {% if not categories %}
+  <p>There do not appear to be any categories for this survey.</p>
+  {% else %}
+  <ul class="list-group-flush">
+    {% for Category in categories %}
+    <li class="list-group-item">
+      <div class="container-fluid row">
+        <div class="col-sm-8">
+          <div class="box" data-widget="data-widget">
+            <div class="btn-toolbar" role="toolbar">
+              <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{Category.pk}}" aria-expanded="false" aria-controls="{{Category.pk}}">
+                {{Category.titleOfCategory}}
+              </button>
+            </div>
+
+            <div class="collapse" id="{{Category.pk}}">
+              <ul class="list-group-flush">
+                <div class="card card-body">
+                  {% for Question in Category.my_questions.all %}
+                  <li class="list-group-item">
+                    <div class="container-fluid row">
+                      <div class="col-sm-6">
+                        <p> {{Question.question_fk.question_text}} </p>
+                      </div>
+
+                      <div class="col-sm float-right">
+                        <div class="btn-toolbar" role="toolbar">
+                          {% if perms.canEditQuestion %}
+                          <div class="btn-group mr-2" role="group">
+                            <a class="btn btn-info" href="{{ Question.question_fk.get_absolute_url }}/update-question">
+                            Edit
+                            </a>
+                          </div>
+                          {% endif %}
+
+                          {% if perms.canDeleteQuestion %}
+                          <div class="btn-group mr-2" role="group">
+                            <form action="{{ Question.question_fk.get_absolute_url }}/delete-question">
+                              <button class="btn btn-danger" type="submit">
+                                Delete</button>
+                            </form>
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  {% endfor %}
+
+                  <br />
+
+                  {% if perms.canCreateQuestion %}
+                  <div class="btn-group mr-2" role="group">
+                    <form action="{%url 'question-create' survey.surveySlug Category.pk%}">
+                      <button class="btn btn-success" type="submit">
+                        Create New Question
+                      </button>
+                    </form>
+                  </div>
+                  {% endif %}
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {% if perms.canEditCategory %}
+        <div class="col-sm">
+          <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mr-2" role="group">
+              <a class="btn btn-info" href="{{ Category.get_absolute_url }}">
+                Edit
+              </a>
+            </div>
+
+            {% if perms.canDeleteCategory %}
+            <div class="btn-group mr-2" role="group">
+              <form action="{{ Category.get_absolute_url }}/delete-category">
+                <button class="btn btn-danger" type="submit">
+                  Delete</button>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+  <div class="container-fluid">
+    <div class="btn-toolbar" role="toolbar">
+
+      {% if perms.canEditSurvey %}
+      <div class="btn-group mr-2" role="group">
+        <a class="btn btn-info" href="{{ survey.get_new_version_url }}">
+          New Version
+        </a>
+      </div>
+      {% endif %}
+
+      {% if perms.canCreateCategory %}
+      <div class="btn-group mr-2" role="group">
+        <form action="{%url 'category-create' survey.surveySlug %}">
+          <button class="btn btn-success" type="submit">
+            New Category
+          </button>
+        </form>
+      </div>
+      {% endif %}
+
+      {% if categories %}
+      <div class="btn-group mr-2" role="group">
+        <a class="btn btn-primary" href="{{survey.get_welcome_url}}">
+          Take Survey
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+<br />
+
+<div class="container-fluid">
+{% comment %} Return button {% endcomment %}
+  <form action="{%url 'survey' %}">
+    <button class="btn btn-primary" type="submit">
+      Return
+    </button>
+  </form>
+</div>
+{% endblock %}

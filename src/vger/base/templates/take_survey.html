@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-fluid">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <h2>{{ toc }}</h2>
+            <br />
+            {{ form|crispy }} 
+        </fieldset>
+
+        <br />
+
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">
+                Next Page
+            </button>
+            <!--<form method="get" action="{{ survey.get_exit_url }}">
+                <button type="submit">Finish Survey</button>
+            </form>-->
+
+        </div>
+    </form> 
+</div>
+
+{% endblock %}

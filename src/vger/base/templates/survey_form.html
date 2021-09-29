@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!--This Section of code is used for the DateTimePicker widget impl-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Static Example</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+  <!-- XDSoft DateTimePicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+</head>
+<!--^^^^This Section of code is used for the DateTimePicker widget impl^^^^-->
+
+<div class="container-fluid">  
+  <form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div class="form-row">
+        <legend>Create Survey:</legend>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.titleOfSurvey|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.version_number|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.description|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.start_date|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+          {{ form.end_date|as_crispy_field }}
+        </div>
+      </div>    
+    </fieldset>
+    <p style="font-size: 15px;color: #000; color: rgba(0,0,0,0.5); font-family: Arial, sans-serif;">* is required</p>
+    <input class="btn btn-success" type="submit" value="Submit" class="spacer">
+    <button onclick="window.history.back();" class="btn btn-primary" type="button">Cancel</button>
+  </form>
+</div>
+{% endblock %}

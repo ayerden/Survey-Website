@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- So Google Chrome stops thinking the website is in french -->
+    <meta charset="utf-8">
+    <meta name="google" content="notranslate">
+    <meta http-equiv="Content-Language" content="en">
+
+    <!-- bootstrap CSS imports -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <!-- link other scripts and stylesheets here -->
+    <link rel="stylesheet" href="{% static 'vger/style.css' %}" type="text/css"/>
+    <link rel="shortcut icon" href="{% static 'vger/favicon.ico' %}" type="image/vnd.microsoft.icon"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+  </head>
+<div class ="scroll">
+  <div class="container">
+    <!-- navbar -->
+    <div class="nav-b shadow">
+      <nav>
+        <div class="logo">
+          <a href="{% url 'home-page' %}">
+            <img src="{% static 'vger/potsdam_red.jpg' %}" alt="SUNY Potsdam VGER"/>
+          </a>
+        </div>
+          <ul class="nav nav-pills nav-bar-links">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home-page' %}">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'survey' %}">Surveys</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile' %}">{{ user.username }}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+      </nav>
+    </div>
+    <div id="main-card" class="card border-0 shadow my-5">
+      <div class="card-body">
+        <body>
+          
+          <!-- page content -->
+          <section style="margin-top: 10px">
+            {% block content %}{% endblock %}
+          </section>
+        </body>
+
+        <footer>
+            <!--Implement Footer Here!-->
+        </footer>
+     </div>
+  </div>
+</div>
+</html>
